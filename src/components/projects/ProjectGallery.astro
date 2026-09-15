@@ -1,0 +1,24 @@
+---
+import { projectImages } from "@/data/projects";
+---
+<section class="field-gallery section" aria-labelledby="field-gallery-title" data-gallery>
+  <div class="shell gallery-heading">
+    <div><p class="eyebrow">Inside the work</p><h2 id="field-gallery-title">Real equipment. Real field conditions.</h2></div>
+    <div class="gallery-intro"><p>Protection, inspection, moisture control, and structural drying documented by the UNITED team.</p><div class="gallery-controls"><button type="button" data-gallery-prev aria-label="Previous image">←</button><button type="button" data-gallery-next aria-label="Next image">→</button></div></div>
+  </div>
+  <div class="gallery-rail" data-gallery-rail tabindex="0" aria-label="UNITED field work gallery">
+    {projectImages.map((image, index) => <figure class:list={["gallery-card", index === 0 && "gallery-card-wide"]}>
+      <img src={image.src} width={image.width} height={image.height} loading="lazy" alt={image.alt} />
+      <figcaption><span>{String(index + 1).padStart(2, "0")}</span><strong>{image.label}</strong></figcaption>
+    </figure>)}
+  </div>
+  <div class="shell gallery-footer"><p>Project locations and customer details are withheld for privacy.</p><a class="button primary" href="#request">Request service</a></div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-gallery]").forEach((gallery) => {
+    const rail = gallery.querySelector<HTMLElement>("[data-gallery-rail]");
+    const move = (direction: number) => rail?.scrollBy({ left: direction * Math.min(rail.clientWidth * .78, 720), behavior: "smooth" });
+    gallery.querySelector("[data-gallery-prev]")?.addEventListener("click", () => move(-1));
+    gallery.querySelector("[data-gallery-next]")?.addEventListener("click", () => move(1));
+  });
+</script>

@@ -1,0 +1,9 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"; import { allServiceAreas, priorityLocations } from "@/data/locations"; import { businessConfig as b } from "@/config/businessConfig";
+export const prerender=true;
+---
+<BaseLayout title="Bay Area Water Damage Service Areas | UNITED" description="UNITED serves San Jose, Santa Clara, and communities across the San Francisco Bay Area with water mitigation and structural drying.">
+  <section class="page-hero"><div class="shell"><p class="eyebrow light">Bay Area coverage</p><h1>Local focus, wider reach.</h1><p>UNITED is based in Santa Clara, with San Jose and Santa Clara County at the center of the service area.</p><a class="button primary bright" href={`tel:${b.phoneHref}`}>Call {b.phoneDisplay}</a></div></section>
+  <section class="section"><div class="shell location-featured">{priorityLocations.map(location=><a href={`/service-area/${location.slug}/`}><p class="eyebrow">Priority location</p><h2>{location.name}</h2><p>{location.lead}</p><span>View local guidance →</span></a>)}</div></section>
+  <section class="section area-section"><div class="shell area-grid"><div><h2>Communities in the service footprint</h2><p>Coverage depends on crew availability and the situation. Call with the property address for the clearest answer.</p></div><div class="area-cloud">{allServiceAreas.map(area=><span>{area}</span>)}</div></div></section>
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"; import LeadForm from "@/components/forms/LeadForm.astro";
+import { priorityLocations, type Location } from "@/data/locations"; import { businessConfig as b } from "@/config/businessConfig";
+export function getStaticPaths(){return priorityLocations.map(location=>({params:{location:location.slug},props:{location}}));}
+export const prerender=true;
+interface Props{location:Location} const {location}=Astro.props;
+const title=`Water Damage Restoration ${location.name}, CA | UNITED`; const description=`${location.lead} Extraction, moisture mapping, and structural drying. Call UNITED at ${b.phoneDisplay}.`;
+---
+<BaseLayout title={title} description={description}>
+  <section class="page-hero"><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/service-area/">Service area</a><span>/</span><span>{location.name}</span></nav><p class="eyebrow light">{location.name}, California</p><h1>Water damage restoration in {location.name}.</h1><p>{location.lead}</p><a class="button primary bright" href={`tel:${b.phoneHref}`}>Call now <strong>{b.phoneDisplay}</strong></a></div></section>
+  <section class="section"><div class="shell local-grid"><div><p class="eyebrow">Property context</p><h2>Follow the building, not a template.</h2><p>{location.context}</p></div><div><h2>Common reasons people call</h2><ul>{location.scenarios.map(s=><li>{s}</li>)}</ul></div></div></section>
+  <section class="section process-band"><div class="shell"><p class="eyebrow">The response</p><h2>Inspect → extract → dry → monitor → verify.</h2><p>The process is adjusted to the actual materials and readings at the property. No city page can predetermine the right scope.</p><div class="inline-links"><a href="/water-damage-restoration/">Water damage restoration</a><a href="/water-extraction/">Water extraction</a><a href="/structural-drying/">Structural drying</a></div></div></section>
+  <section class="section request-section"><div class="shell request-grid"><div><p class="eyebrow light">Request service in {location.name}</p><h2>Tell us what happened.</h2></div><LeadForm /></div></section>
+</BaseLayout>

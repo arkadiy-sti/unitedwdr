@@ -1,0 +1,9 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"; import LeadForm from "@/components/forms/LeadForm.astro"; import { businessConfig as b } from "@/config/businessConfig";
+export const prerender=true;
+---
+<BaseLayout title="Request Water Damage Service | Contact UNITED" description="Call or request water damage service from UNITED in San Jose, Santa Clara, and the Bay Area.">
+  <section class="page-hero contact-hero"><div class="shell"><p class="eyebrow light">Contact UNITED</p><h1>Get the situation moving.</h1><p>For active water entry or an urgent loss, call. For a detailed request, send the form below.</p><a class="button primary bright" href={`tel:${b.phoneHref}`}>Call now <strong>{b.phoneDisplay}</strong></a></div></section>
+  <section class="section"><div class="shell contact-details"><div><p class="eyebrow">Phone</p><a href={`tel:${b.phoneHref}`}>{b.phoneDisplay}</a></div><div><p class="eyebrow">Email</p><a href={`mailto:${b.email}`}>{b.email}</a></div><div><p class="eyebrow">Address</p><address>{b.address.street}<br />{b.address.city}, {b.address.region} {b.address.postalCode}</address></div></div></section>
+  <section class="section request-section"><div class="shell request-grid"><div><p class="eyebrow light">Complete service request</p><h2>What happened—and when?</h2><p>We replaced the old project-start calendar with damage timing because it gives a restoration team more useful context.</p></div><LeadForm complete /></div></section>
+</BaseLayout>

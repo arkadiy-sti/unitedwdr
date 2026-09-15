@@ -1,0 +1,18 @@
+---
+import { businessConfig as business } from "@/config/businessConfig";
+---
+<header class="site-header" data-header>
+  <div class="header-inner shell">
+    <a href="/" class="brand" aria-label="United Water Damage Restoration home"><img src="/images/united-logo.webp" width="190" height="127" loading="eager" decoding="sync" fetchpriority="high" alt="United Water Damage Restoration" /></a>
+    <nav class="desktop-nav" aria-label="Primary"><a href="/services/">Services</a><a href="/#process">Process</a><a href="/service-area/">Service area</a><a href="/about/">Why United</a><a href="/contact/">Contact</a></nav>
+    <a class="header-call" href={`tel:${business.phoneHref}`} data-event="phone_click"><span>Call now</span><strong>{business.phoneDisplay}</strong></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span class="sr-only">Open menu</span></button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile" hidden><a href="/services/">Services</a><a href="/#process">Process</a><a href="/service-area/">Service area</a><a href="/about/">Why United</a><a href="/contact/">Request service</a><a class="button primary" href={`tel:${business.phoneHref}`}>Call {business.phoneDisplay}</a></nav>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle"); const nav = document.querySelector<HTMLElement>("#mobile-nav");
+  toggle?.addEventListener("click", () => { const open = toggle.getAttribute("aria-expanded") === "true"; toggle.setAttribute("aria-expanded", String(!open)); if (nav) nav.hidden = open; });
+  nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => { if (nav) nav.hidden = true; toggle?.setAttribute("aria-expanded", "false"); }));
+  const header = document.querySelector<HTMLElement>("[data-header]"); addEventListener("scroll", () => header?.classList.toggle("is-scrolled", scrollY > 24), { passive:true });
+</script>

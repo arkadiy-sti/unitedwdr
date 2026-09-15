@@ -1,0 +1,7 @@
+# Motion system
+
+The house remains one locked cutaway photograph (`base-house.webp`) for the entire eleven-stage restoration narrative — it is never swapped or crossfaded for a different render. Water loss, moisture migration, van arrival, inspection, extraction, air movers, airflow, dehumidification, monitoring, drying, and the final dry state are produced by animating independent photographic object layers (van, technicians, extraction tool, air movers, dehumidifier), procedural rain/leak/airflow effects, and CSS opacity/gradient overlays on top of that fixed base. See `docs/HERO_RESTART.md` for asset provenance and editing points.
+
+Scroll position drives a single continuous progress value from the section-local scroll controller in `heroController.ts` (never document-level scroll), which every visual property is derived from — see `heroTimeline.ts` for stage boundaries and easing curves. Motion uses requestAnimationFrame-scheduled opacity/transform updates and never hijacks scrolling; forward and reverse scrubbing stay visually coherent because nothing is a one-shot animation.
+
+Desktop pins the full-screen scene behind a left information panel and a bottom-right stage caption; tablet narrows the same layout; mobile keeps the full house visible in a focused crop with a compact bottom card. `prefers-reduced-motion` renders one stable house frame plus the complete readable stage text as static, unanimated HTML.

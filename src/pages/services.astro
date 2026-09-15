@@ -1,0 +1,8 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"; import { services } from "@/data/services";
+export const prerender=true;
+---
+<BaseLayout title="Water Damage Services | UNITED San Jose & Santa Clara" description="Explore UNITED water damage restoration, extraction, flood cleanup, structural drying, sewage cleanup, mold remediation, and leak damage services.">
+  <section class="page-hero"><div class="shell"><p class="eyebrow light">Water mitigation services</p><h1>Find the right response for what happened.</h1><p>Start with plain language. We’ll connect the visible problem to the inspection, extraction, drying, and monitoring it may require.</p></div></section>
+  <section class="section"><div class="shell service-list">{services.map((service,index)=><a class="service-row" href={`/${service.slug}/`}><span>{String(index+1).padStart(2,"0")}</span><div><h2>{service.name}</h2><p>{service.summary}</p></div><b>↗</b></a>)}</div></section>
+</BaseLayout>

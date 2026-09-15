@@ -1,0 +1,6 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+export const prerender=true;
+const posts=[{href:"/blogs/what-tools-we-use-to-dry-up-the-flood/",title:"What tools help dry a water-damaged structure?",copy:"How extraction, air movement, dehumidification, and moisture meters work as a system."},{href:"/blogs/professional-water-damage-mitigation-in-the-bay-area-a-real-project-breakdown/",title:"A practical water-mitigation breakdown",copy:"A homeowner-friendly outline of inspection, extraction, equipment, monitoring, and verification."}];
+---
+<BaseLayout title="Water Damage Field Notes | UNITED" description="Plain-language guidance on water mitigation equipment, structural drying, and moisture monitoring from UNITED."><section class="page-hero"><div class="shell"><p class="eyebrow light">Field notes</p><h1>Understand the work behind a dry structure.</h1></div></section><section class="section"><div class="shell location-featured">{posts.map(post=><a href={post.href}><p class="eyebrow">Guide</p><h2>{post.title}</h2><p>{post.copy}</p><span>Read guide →</span></a>)}</div></section></BaseLayout>

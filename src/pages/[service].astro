@@ -1,0 +1,87 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import "@/styles/service-pages.css";
+import LeadForm from "@/components/forms/LeadForm.astro";
+import { services, type Service } from "@/data/services";
+import { serviceDetails } from "@/data/serviceDetails";
+import { businessConfig as b } from "@/config/businessConfig";
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { service: service.slug }, props: { service } }));
+}
+export const prerender = true;
+interface Props { service: Service }
+const { service } = Astro.props;
+const detail = serviceDetails[service.slug];
+const relatedSlugs: Record<string, string[]> = {
+  "water-damage-restoration": ["water-extraction", "structural-drying", "leak-damage"],
+  "flood-cleanup": ["flood-restoration", "water-extraction", "sewage-cleanup"],
+  "flood-restoration": ["flood-cleanup", "structural-drying", "water-damage-restoration"],
+  "structural-drying": ["water-extraction", "water-damage-restoration", "leak-damage"],
+  "water-extraction": ["structural-drying", "flood-cleanup", "water-damage-restoration"],
+  "sewage-cleanup": ["flood-cleanup", "water-damage-restoration", "structural-drying"],
+  "mold-remediation": ["leak-damage", "structural-drying", "water-damage-restoration"],
+  "leak-damage": ["water-damage-restoration", "structural-drying", "mold-remediation"]
+};
+const related = (relatedSlugs[service.slug] ?? []).map((slug) => services.find((item) => item.slug === slug)).filter((item): item is Service => Boolean(item));
+const title = `${service.name} San Jose & Santa Clara | UNITED`;
+const description = `${service.summary} Call ${b.phoneDisplay} for local help.`;
+const schema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.summary, provider: { "@type": "Organization", name: b.name }, areaServed: ["San Jose", "Santa Clara", "San Francisco Bay Area"] };
+---
+<BaseLayout title={title} description={description} schema={schema}>
+  <section class="page-hero service-hero">
+    <div class="shell">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/services/">Services</a><span>/</span><span>{service.name}</span></nav>
+      <p class="eyebrow light">{service.eyebrow}</p>
+      <h1>{service.name}</h1>
+      <p>{service.summary}</p>
+      <div class="hero-actions"><a class="button primary bright" href={`tel:${b.phoneHref}`}>Call now <strong>{b.phoneDisplay}</strong></a><a class="button line" href="#request">Request service</a></div>
+    </div>
+  </section>
+
+  <section class="section service-opening" aria-label="Understanding this service">
+    <div class="shell service-explain">
+      <article><span>01 / THE SITUATION</span><h2>What happened</h2><p>{service.happened}</p></article>
+      <article><span>02 / THE RESPONSE</span><h2>What the work involves</h2><p>{service.action}</p></article>
+      <article><span>03 / THE REASON</span><h2>Why it matters</h2><p>{service.matters}</p></article>
+    </div>
+  </section>
+
+  <section class="section service-situations">
+    <div class="shell service-two-col">
+      <div><p class="eyebrow">Where this applies</p><h2>More than one way water reaches a building.</h2><p>The right response depends on the source, the materials reached, and what happened before the loss was discovered.</p><a class="text-link" href={`tel:${b.phoneHref}`}>Discuss your situation with UNITED →</a></div>
+      <ul>{detail.situations.map((situation) => <li>{situation}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section service-assessment">
+    <div class="shell service-two-col">
+      <div><p class="eyebrow light">Field assessment</p><h2>Define the actual scope before setting equipment.</h2></div>
+      <div><p>{detail.assessment}</p><div class="service-method-note">Source and contamination are evaluated case by case. Not every water loss requires the same cleaning, demolition, or drying method.</div></div>
+    </div>
+  </section>
+
+  <section class="section service-work">
+    <div class="shell">
+      <div class="service-work-head"><div><p class="eyebrow">The work</p><h2>What a professional response may include.</h2></div><p>These are the core decisions, not a promise that every step is necessary at every property. The written scope should follow the on-site findings.</p></div>
+      <ol class="service-work-list">{detail.work.map((item, index) => <li><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{item.title}</h3><p>{item.detail}</p></div></li>)}</ol>
+    </div>
+  </section>
+
+  <section class="section service-materials">
+    <div class="shell service-two-col">
+      <div><p class="eyebrow">Material decisions</p><h2>Clean, dry, or remove?</h2><p>{detail.materials}</p></div>
+      <div><p class="eyebrow">Before the job is closed</p><h2>Document the result.</h2><p>{detail.closeout}</p></div>
+    </div>
+  </section>
+
+  <section class="service-urgent"><div class="shell service-urgent-inner"><div><p class="eyebrow light">Before help arrives</p><h2>What to do now.</h2><p>{detail.immediate}</p></div><a class="button primary bright" href={`tel:${b.phoneHref}`}>Call {b.phoneDisplay}</a></div></section>
+
+  <section class="section service-questions"><div class="shell narrow"><p class="eyebrow">Common questions</p><h2>Clear answers for this situation.</h2>{detail.questions.map((item) => <details><summary>{item.q}<span>+</span></summary><p>{item.a}</p></details>)}</div></section>
+
+  <section class="section service-guidance"><div class="shell service-two-col"><div><p class="eyebrow">Our editorial basis</p><h2>Grounded in recognized restoration guidance.</h2></div><div><p>These pages explain field principles reflected in the <a href="https://iicrc.org/s500/" rel="noopener noreferrer">ANSI/IICRC S500 water-damage restoration standard</a>, the <a href="https://iicrc.org/s520/" rel="noopener noreferrer">ANSI/IICRC S520 mold-remediation standard</a> where applicable, and public guidance from the <a href="https://www.epa.gov/emergencies-iaq/flood-cleanup-protect-indoor-air-and-your-health" rel="noopener noreferrer">EPA</a> and <a href="https://www.cdph.ca.gov/Programs/CCDPHP/DEODC/OHB/HESIS/Pages/mold.aspx" rel="noopener noreferrer">California Department of Public Health</a>. Actual procedures, worker protections, permits, and specialist involvement depend on the property and scope. This information is not a claim of certification or a substitute for an on-site assessment.</p><p>Before disturbing older finishes, lead or asbestos concerns may require evaluation and handling by properly qualified professionals under applicable California requirements.</p></div></div></section>
+
+  <section class="section service-related"><div class="shell"><p class="eyebrow">Related services</p><h2>The next piece of the response.</h2><div class="service-related-links">{related.map((item) => <a href={`/${item.slug}/`}>{item.name}<span aria-hidden="true">↗</span></a>)}</div></div></section>
+
+  <section class="section request-section" id="request"><div class="shell request-grid"><div><p class="eyebrow light">Get help now</p><h2>Describe the water loss.</h2><p>Tell us where the water came from, which areas are affected, and when it happened. We’ll help identify the appropriate next step.</p><a class="call-panel" href={`tel:${b.phoneHref}`}><span>Prefer to call?</span><strong>{b.phoneDisplay}</strong></a></div><LeadForm /></div></section>
+</BaseLayout>

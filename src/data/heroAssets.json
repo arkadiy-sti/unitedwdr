@@ -1,0 +1,202 @@
+{
+  "version": "1.1-photo-assets",
+  "masterScene": [
+    1920,
+    1080
+  ],
+  "source": "United House Animation.html — original embedded project images",
+  "imageTreatment": "WebP format conversion. Most objects (VAN-01, T-01, T-02, AM-01..04, DH-01) are standalone photographic cutouts with baked-in alpha, rendered directly at their registered position. EX-01 remains a photographic silhouette cropped from the original composite frame and displayed through a native SVG clip-path mask pending a dedicated isolated photo.",
+  "anchorMode": "registered to BASE-01 floors; original agreed coordinates retained under anchor and available with ?anchors=original",
+  "assets": {
+    "van": {
+      "asset": "VAN-01",
+      "file": "van-01.webp",
+      "naturalSize": [1671, 897],
+      "anchor": [
+        0.19,
+        0.64
+      ],
+      "registered": [
+        0.265,
+        0.814
+      ],
+      "height": 0.16,
+      "start": 0.18,
+      "end": 0.31
+    },
+    "techLower": {
+      "asset": "T-01",
+      "file": "tech-01.webp",
+      "naturalSize": [557, 1461],
+      "anchor": [
+        0.45,
+        0.585
+      ],
+      "registered": [
+        0.565,
+        0.7
+      ],
+      "height": 0.15,
+      "start": 0.34,
+      "end": 0.4
+    },
+    "techUpper": {
+      "asset": "T-02",
+      "file": "tech-02.webp",
+      "naturalSize": [581, 1509],
+      "anchor": [
+        0.565,
+        0.315
+      ],
+      "registered": [
+        0.574,
+        0.435
+      ],
+      "height": 0.15,
+      "start": 0.37,
+      "end": 0.43
+    },
+    "extractor": {
+      "asset": "EX-01",
+      "source": 12,
+      "crop": [1102, 768, 73, 47],
+      "path": "M1107 769 Q1116 775 1119 782 L1126 789 Q1135 790 1141 793 L1157 793 Q1168 796 1173 805 L1171 812 L1123 813 Q1112 812 1108 805 L1103 793 Z",
+      "registered": [0.598, 0.713],
+      "height": 0.041
+    },
+    "am1": {
+      "asset": "AM-01",
+      "file": "air-mover-01.webp",
+      "naturalSize": [1378, 1139],
+      "anchor": [
+        0.385,
+        0.615
+      ],
+      "registered": [
+        0.52,
+        0.708
+      ],
+      "height": 0.045,
+      "flip": true,
+      "outlet": [
+        0.9,
+        0.87
+      ],
+      "target": [
+        0.586,
+        0.697
+      ],
+      "room": "lowerLiving",
+      "start": 0.38,
+      "end": 0.425
+    },
+    "am2": {
+      "asset": "AM-02",
+      "file": "air-mover-01.webp",
+      "naturalSize": [1378, 1139],
+      "anchor": [
+        0.715,
+        0.615
+      ],
+      "registered": [
+        0.854,
+        0.724
+      ],
+      "height": 0.045,
+      "outlet": [
+        0.1,
+        0.87
+      ],
+      "target": [
+        0.755,
+        0.71
+      ],
+      "room": "lowerKitchen",
+      "start": 0.415,
+      "end": 0.46
+    },
+    "am3": {
+      "asset": "AM-03",
+      "file": "air-mover-01.webp",
+      "naturalSize": [1378, 1139],
+      "anchor": [
+        0.515,
+        0.345
+      ],
+      "registered": [
+        0.611,
+        0.437
+      ],
+      "height": 0.046,
+      "flip": true,
+      "outlet": [
+        0.9,
+        0.87
+      ],
+      "target": [
+        0.675,
+        0.425
+      ],
+      "room": "upperBath",
+      "start": 0.45,
+      "end": 0.495
+    },
+    "am4": {
+      "asset": "AM-04",
+      "file": "air-mover-01.webp",
+      "naturalSize": [1378, 1139],
+      "anchor": [
+        0.68,
+        0.345
+      ],
+      "registered": [
+        0.827,
+        0.436
+      ],
+      "height": 0.046,
+      "outlet": [
+        0.1,
+        0.87
+      ],
+      "target": [
+        0.762,
+        0.423
+      ],
+      "room": "upperLaundry",
+      "start": 0.485,
+      "end": 0.53
+    },
+    "dehu": {
+      "asset": "DH-01",
+      "file": "dehumidifier-01.webp",
+      "naturalSize": [960, 1520],
+      "anchor": [
+        0.595,
+        0.6
+      ],
+      "registered": [
+        0.688,
+        0.717
+      ],
+      "height": 0.074,
+      "start": 0.52,
+      "end": 0.565
+    }
+  },
+  "performance": {
+    "standaloneBytes": 791174,
+    "standaloneGzipBytes": 574128,
+    "initialPackageBytes": 339274,
+    "deferredSourceBytes": 251920,
+    "rainParticleLimits": [
+      390,
+      240,
+      130
+    ],
+    "dprCaps": [
+      2,
+      2,
+      1.5
+    ]
+  }
+}

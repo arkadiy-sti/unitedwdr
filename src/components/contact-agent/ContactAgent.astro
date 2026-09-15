@@ -1,0 +1,15 @@
+---
+import { businessConfig as b } from "@/config/businessConfig";
+---
+<aside class="contact-agent" data-agent>
+  <section class="agent-panel" id="contact-panel" aria-label="Contact United" hidden>
+    <button class="agent-close" type="button" aria-label="Close contact panel">×</button><p class="eyebrow">Need a hand?</p><h2>Talk to UNITED</h2><p>For active water damage, calling is the fastest way to explain what is happening.</p>
+    <a class="button primary" href={`tel:${b.phoneHref}`} data-event="contact_call_click">Call now · {b.phoneDisplay}</a><a class="button ghost" href="/contact/" data-event="contact_message_click">Message / contact us</a>
+  </section>
+  <button class="agent-trigger" type="button" aria-expanded="false" aria-controls="contact-panel" data-event="contact_agent_open"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-3 3V11.5A7.5 7.5 0 0 1 9.5 4h3a7.5 7.5 0 0 1 7.5 7.5Z"/><path d="M7 10h8M7 14h5"/></svg><span class="sr-only">Open contact options</span></button>
+</aside>
+<script>
+  const root=document.querySelector<HTMLElement>("[data-agent]"); const panel=root?.querySelector<HTMLElement>(".agent-panel"); const trigger=root?.querySelector<HTMLButtonElement>(".agent-trigger"); const close=root?.querySelector<HTMLButtonElement>(".agent-close");
+  const setOpen=(open:boolean)=>{ const hadFocus=panel?.contains(document.activeElement); if(panel) panel.hidden=!open; trigger?.setAttribute("aria-expanded",String(open)); if(open) close?.focus(); else if(hadFocus) trigger?.focus(); };
+  trigger?.addEventListener("click",()=>setOpen(panel?.hidden ?? true)); close?.addEventListener("click",()=>setOpen(false)); addEventListener("keydown",e=>{if(e.key==="Escape")setOpen(false)});
+</script>

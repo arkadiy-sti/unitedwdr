@@ -1,0 +1,39 @@
+---
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import ContactAgent from "@/components/contact-agent/ContactAgent.astro";
+import { businessConfig as business } from "@/config/businessConfig";
+import "@/styles/global.css";
+interface Props { title: string; description: string; path?: string; schema?: Record<string, unknown> | Record<string, unknown>[]; }
+const { title, description, path = Astro.url.pathname, schema } = Astro.props;
+const canonical = new URL(path, business.canonicalOrigin).toString();
+const baseSchema = [{
+  "@context":"https://schema.org", "@type":["Organization","HomeAndConstructionBusiness"], name:business.name,
+  url:business.canonicalOrigin, telephone:business.phoneHref, email:business.email,
+  address:{ "@type":"PostalAddress", streetAddress:business.address.street, addressLocality:business.address.city, addressRegion:business.address.region, postalCode:business.address.postalCode, addressCountry:business.address.country },
+  areaServed:["San Jose","Santa Clara County","San Francisco Bay Area"]
+}, { "@context":"https://schema.org", "@type":"WebSite", name:business.name, url:business.canonicalOrigin }];
+const schemas = [...baseSchema, ...(Array.isArray(schema) ? schema : schema ? [schema] : [])];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
+    <title>{title}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" /><meta property="og:site_name" content={business.name} /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} />
+    <meta name="theme-color" content="#061b2c" /><link rel="icon" href="/favicon.svg" />
+    {schemas.map((item) => <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a><Header />
+    <main id="main"><slot /></main>
+    <Footer /><ContactAgent />
+    <script>
+      document.addEventListener("click", (event) => {
+        const target = (event.target as HTMLElement).closest<HTMLElement>("[data-event]");
+        if (target) window.dispatchEvent(new CustomEvent("united:analytics", { detail: { event: target.dataset.event, label: target.dataset.label ?? "" } }));
+      });
+    </script>
+  </body>
+</html>

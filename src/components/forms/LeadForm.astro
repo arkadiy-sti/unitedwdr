@@ -1,0 +1,48 @@
+---
+import { businessConfig as b } from "@/config/businessConfig";
+interface Props { complete?: boolean; }
+const { complete = false } = Astro.props;
+---
+<form class:list={["lead-form", complete && "lead-form-complete"]} data-lead-form data-delivery={b.turnstileSiteKey ? "online" : "email"} novalidate>
+  <div class="form-grid">
+    <label>First name <span aria-hidden="true">*</span><input name="firstName" autocomplete="given-name" required maxlength="60" /></label>
+    {complete && <label>Last name <span aria-hidden="true">*</span><input name="lastName" autocomplete="family-name" required maxlength="60" /></label>}
+    <label>Phone <span aria-hidden="true">*</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" /></label>
+    <label>{complete ? "Email" : "Email (optional)"}<input name="email" type="email" autocomplete="email" required={complete} maxlength="120" /></label>
+    <label>ZIP or city <span aria-hidden="true">*</span><input name="location" autocomplete="postal-code" required maxlength="80" /></label>
+    <label>When did the damage happen? <span aria-hidden="true">*</span><select name="timing" required><option value="">Select one</option><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="2-3-days">2–3 days ago</option><option value="earlier">Earlier</option><option value="not-sure">Not sure</option></select></label>
+    <label class="full">What happened? <span aria-hidden="true">*</span><select name="incident" required><option value="">Choose the closest match</option><option value="active-leak">Active leak</option><option value="appliance">Appliance or laundry leak</option><option value="roof">Roof or rain intrusion</option><option value="flood">Indoor flooding</option><option value="sewage">Sewage backup</option><option value="mold">Possible mold / persistent moisture</option><option value="other">Other / not sure</option></select></label>
+    <label class="full">Project details <span aria-hidden="true">*</span><textarea name="details" required maxlength="1500" rows="4" aria-describedby="details-hint"></textarea><small id="details-hint">Tell us where the water is and whether it is still entering.</small></label>
+  </div>
+  <div class="hp" aria-hidden="true"><label>Company website<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+  {b.turnstileSiteKey && <div class="turnstile-slot" data-sitekey={b.turnstileSiteKey}><p>Complete the security check before sending.</p></div>}
+  <p class="form-status" role="status" aria-live="polite"></p>
+  <button class="button primary submit" type="submit">{b.turnstileSiteKey ? "Request water damage service" : "Prepare email request"}</button>
+  {!b.turnstileSiteKey && <p class="form-note">Review and send your request in your email app. For immediate help, call us.</p>}
+  <p class="form-note">If water is actively entering the property or you need immediate assistance, call <a href={`tel:${b.phoneHref}`}>{b.phoneDisplay}</a>.</p>
+</form>
+{b.turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>}
+<script>
+  declare global { interface Window { turnstile?: { render:(el:HTMLElement, options:Record<string,unknown>)=>string } } }
+  document.querySelectorAll<HTMLFormElement>("[data-lead-form]").forEach(form=>{
+    const status=form.querySelector<HTMLElement>(".form-status"); const button=form.querySelector<HTMLButtonElement>("button[type=submit]"); let token="";
+    const loadWidget=()=>{ const slot=form.querySelector<HTMLElement>(".turnstile-slot"); if(slot&&window.turnstile&&!slot.dataset.loaded){ slot.textContent=""; window.turnstile.render(slot,{sitekey:slot.dataset.sitekey,callback:(value:string)=>token=value,"expired-callback":()=>token=""}); slot.dataset.loaded="true"; } };
+    form.addEventListener("focusin",loadWidget,{once:true});
+    form.addEventListener("submit",async(event)=>{ event.preventDefault(); loadWidget(); if(!form.reportValidity())return;
+      if(form.dataset.delivery==="email"){
+        const values=new FormData(form);
+        const fields=[['First name','firstName'],['Last name','lastName'],['Phone','phone'],['Email','email'],['Location','location'],['Timing','timing'],['Incident','incident'],['Details','details']];
+        const body=fields.filter(([,key])=>values.get(key!)).map(([label,key])=>`${label}: ${values.get(key!)}`).join("\n");
+        const href=`mailto:info@unitedwdr.com?subject=${encodeURIComponent('Water damage service request')}&body=${encodeURIComponent(body)}`;
+        if(status){status.textContent="Your email draft is ready. ";const link=document.createElement('a');link.href=href;link.textContent="Open your email app to review and send";link.style.textDecoration="underline";status.append(link);link.focus();}
+        return;
+      }
+      if(!token){ if(status)status.textContent="Please complete the security check, then submit again."; return; }
+      if(button)button.disabled=true; if(status)status.textContent="Sending your request…";
+      const data=Object.fromEntries(new FormData(form).entries()); data.turnstileToken=token;
+      try{ const response=await fetch("/api/leads",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(data)}); const result=await response.json() as {ok:boolean;message?:string};
+        if(!response.ok||!result.ok)throw new Error(); form.reset(); if(status)status.innerHTML=`<strong>Request received.</strong> If you need immediate assistance, call <a href="tel:+14083854892">(408) 385-4892</a>.`; window.dispatchEvent(new CustomEvent("united:analytics",{detail:{event:"request_service_submit"}}));
+      }catch{if(status)status.textContent="We couldn’t send the request. Please call (408) 385-4892 or try again."}finally{if(button)button.disabled=false;}
+    });
+  });
+</script>

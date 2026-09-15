@@ -1,0 +1,5 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": { "types": ["@cloudflare/workers-types", "vitest/globals"], "baseUrl": ".", "paths": { "@/*": ["src/*"] } },
+  "include": [".astro/types.d.ts", "src/**/*", "tests/**/*"], "exclude": ["dist"]
+}

@@ -1,0 +1,5 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"; import { businessConfig as b } from "@/config/businessConfig"; Astro.response.status=404;
+export const prerender=true;
+---
+<BaseLayout title="Page Not Found | UNITED" description="The requested page could not be found."><section class="not-found shell"><p class="eyebrow">404</p><h1>This page is dry.<br />The link isn’t.</h1><p>The page may have moved during the website restoration.</p><div class="hero-actions"><a class="button primary" href="/">Go home</a><a class="button ghost" href={`tel:${b.phoneHref}`}>Call {b.phoneDisplay}</a></div></section></BaseLayout>

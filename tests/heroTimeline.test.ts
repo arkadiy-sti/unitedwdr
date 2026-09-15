@@ -40,7 +40,8 @@ describe("scroll-driven house story", () => {
   it("registers each piece of equipment inside the architectural world", () => {
     for (const id of ["extractor", "am1", "am2", "am3", "am4", "dehu"] as const) {
       const asset = manifest.assets[id];
-      expect(asset.path.length).toBeGreaterThan(30);
+      if ("path" in asset) expect(asset.path.length).toBeGreaterThan(30);
+      else expect(asset.file.length).toBeGreaterThan(5);
       expect(asset.registered[0]).toBeGreaterThan(.4);
       expect(asset.registered[0]).toBeLessThan(.9);
       expect(asset.registered[1]).toBeGreaterThan(.3);

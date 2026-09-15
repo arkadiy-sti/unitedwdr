@@ -13,6 +13,7 @@ export const prerender = true;
 interface Props { service: Service }
 const { service } = Astro.props;
 const detail = serviceDetails[service.slug];
+if (!detail) throw new Error(`Missing service detail for slug: ${service.slug}`);
 const relatedSlugs: Record<string, string[]> = {
   "water-damage-restoration": ["water-extraction", "structural-drying", "leak-damage"],
   "flood-cleanup": ["flood-restoration", "water-extraction", "sewage-cleanup"],

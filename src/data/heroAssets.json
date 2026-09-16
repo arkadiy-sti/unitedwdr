@@ -4,14 +4,17 @@
     1920,
     1080
   ],
-  "source": "United House Animation.html — original embedded project images",
+  "source": "United House Animation.html \u2014 original embedded project images",
   "imageTreatment": "WebP format conversion. Most objects (VAN-01, T-01, T-02, AM-01..04, DH-01) are standalone photographic cutouts with baked-in alpha, rendered directly at their registered position. EX-01 remains a photographic silhouette cropped from the original composite frame and displayed through a native SVG clip-path mask pending a dedicated isolated photo.",
   "anchorMode": "registered to BASE-01 floors; original agreed coordinates retained under anchor and available with ?anchors=original",
   "assets": {
     "van": {
       "asset": "VAN-01",
       "file": "van-01.webp",
-      "naturalSize": [1671, 897],
+      "naturalSize": [
+        1671,
+        897
+      ],
       "anchor": [
         0.19,
         0.64
@@ -27,7 +30,10 @@
     "techLower": {
       "asset": "T-01",
       "file": "tech-01.webp",
-      "naturalSize": [557, 1461],
+      "naturalSize": [
+        557,
+        1461
+      ],
       "anchor": [
         0.45,
         0.585
@@ -43,7 +49,10 @@
     "techUpper": {
       "asset": "T-02",
       "file": "tech-02.webp",
-      "naturalSize": [581, 1509],
+      "naturalSize": [
+        581,
+        1509
+      ],
       "anchor": [
         0.565,
         0.315
@@ -59,15 +68,26 @@
     "extractor": {
       "asset": "EX-01",
       "source": 12,
-      "crop": [1102, 768, 73, 47],
+      "crop": [
+        1102,
+        768,
+        73,
+        47
+      ],
       "path": "M1107 769 Q1116 775 1119 782 L1126 789 Q1135 790 1141 793 L1157 793 Q1168 796 1173 805 L1171 812 L1123 813 Q1112 812 1108 805 L1103 793 Z",
-      "registered": [0.598, 0.713],
-      "height": 0.041
+      "registered": [
+        0.598,
+        0.713
+      ],
+      "height": 0.068
     },
     "am1": {
       "asset": "AM-01",
       "file": "air-mover-01.webp",
-      "naturalSize": [1378, 1139],
+      "naturalSize": [
+        1378,
+        1139
+      ],
       "anchor": [
         0.385,
         0.615
@@ -93,7 +113,10 @@
     "am2": {
       "asset": "AM-02",
       "file": "air-mover-01.webp",
-      "naturalSize": [1378, 1139],
+      "naturalSize": [
+        1378,
+        1139
+      ],
       "anchor": [
         0.715,
         0.615
@@ -118,7 +141,10 @@
     "am3": {
       "asset": "AM-03",
       "file": "air-mover-01.webp",
-      "naturalSize": [1378, 1139],
+      "naturalSize": [
+        1378,
+        1139
+      ],
       "anchor": [
         0.515,
         0.345
@@ -144,7 +170,10 @@
     "am4": {
       "asset": "AM-04",
       "file": "air-mover-01.webp",
-      "naturalSize": [1378, 1139],
+      "naturalSize": [
+        1378,
+        1139
+      ],
       "anchor": [
         0.68,
         0.345
@@ -169,7 +198,10 @@
     "dehu": {
       "asset": "DH-01",
       "file": "dehumidifier-01.webp",
-      "naturalSize": [960, 1520],
+      "naturalSize": [
+        960,
+        1520
+      ],
       "anchor": [
         0.595,
         0.6

@@ -26,10 +26,14 @@ export function heroState(progress: number) {
     progress: p,
     stageIndex,
     rain: fall(p, .04, .84),
-    storm: fall(p, .13, .91),
+    storm: fall(p, .13, .87),
     leaks: fall(p, .16, .30),
-    wet: fall(p, .77, .97),
-    moisture: envelope(p, .05, .14, .75, .96),
+    // Wetness and material moisture fall gradually across the whole drying
+    // arc (extraction through progressive drying), not just in the last stage,
+    // so the house visibly dries as the story progresses rather than snapping
+    // from "fully wet" to "fully dry" in the final few percent.
+    wet: fall(p, .38, .88),
+    moisture: envelope(p, .05, .14, .40, .93),
     van: envelope(p, .16, .225, .91, .995),
     inspection: envelope(p, .235, .27, .32, .40),
     extraction: envelope(p, .33, .375, .42, .50),
@@ -37,8 +41,7 @@ export function heroState(progress: number) {
     airflow: envelope(p, .52, .575, .86, .95),
     dehumidifier: envelope(p, .61, .67, .945, .995),
     monitoring: envelope(p, .70, .735, .79, .86),
-    recovery: rise(p, .78, 1),
-    vanTravel: rise(p, .16, .225) * fall(p, .91, .995),
-    waterReduction: rise(p, .34, .49)
+    recovery: rise(p, .80, 1),
+    vanTravel: rise(p, .16, .225) * fall(p, .91, .995)
   };
 }

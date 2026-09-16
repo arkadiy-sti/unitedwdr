@@ -166,11 +166,12 @@ if (story) {
       mobileDetail.inert = reveal < .995;
     }
     loadNeededObjects(progress);
+    if (world) world.style.setProperty("--dry", state.recovery.toFixed(3));
     setOpacity(storm, state.storm * .75);
-    setOpacity(wet, state.wet * (1 - state.waterReduction * .45));
-    setOpacity(pools, state.wet * (1 - state.waterReduction * .76));
+    setOpacity(wet, state.wet);
+    setOpacity(pools, state.wet * .82);
     setOpacity(moisture, state.moisture);
-    setOpacity(damage, state.moisture * (1 - state.waterReduction * .46));
+    setOpacity(damage, state.moisture * .84);
     setOpacity(recovery, state.recovery * .7);
     setOpacity(airflow, state.airflow);
     setOpacity(hose, state.extraction);
@@ -259,6 +260,10 @@ if (story) {
 
   const intersection = new IntersectionObserver(([entry]) => {
     visible = entry?.isIntersecting ?? false;
+    // Idle work animation on the technicians runs on its own CSS loop, independent
+    // of scroll, so it keeps playing while the section is paused mid-story; pause
+    // it only when the section is fully offscreen so it costs nothing there.
+    story!.classList.toggle("uwd-idle-paused", !visible);
     if (visible) { measureProgress(); lastTime = performance.now(); schedule(); }
     else {
       story!.classList.remove("uwd-flow-active", "uwd-monitor-active");

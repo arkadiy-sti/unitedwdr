@@ -86,7 +86,7 @@ body:has(.uwd-hero-story) .site-header:not(.is-scrolled){background:linear-gradi
 .uwd-intro-panel{border-radius:2px;border-color:#c0dce32b;box-shadow:0 25px 80px #00101c40}
 .uwd-intro-panel h1{font-size:clamp(2.1rem,2.9vw,3.4rem);line-height:1.03;letter-spacing:-.055em}
 .uwd-call{transition:background .2s,box-shadow .2s}.uwd-call:hover{background:#92e8f2;box-shadow:0 8px 28px #62d7e826}
-.uwd-story-caption{right:108px;bottom:76px;width:min(390px,32vw);box-shadow:none;background:#031726c2}
+.uwd-story-caption{right:108px;bottom:76px;width:min(340px,28vw);box-shadow:none;background:#031726c2}
 .uwd-story-caption p{font-size:12px}.uwd-story-caption span{font-size:14px}
 .uwd-progress{right:108px}.uwd-visual-note{right:108px;font-size:10px}
 @media(min-width:1200px){.uwd-intro-panel{top:124px}.uwd-panel-logo{height:60px;width:105px}.uwd-intro-copy{font-size:15px}.uwd-service-links a{font-size:12px}.uwd-proof{font-size:11px}.uwd-intro-panel .uwd-kicker{font-size:10px}}

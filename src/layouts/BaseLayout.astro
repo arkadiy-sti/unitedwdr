@@ -4,9 +4,10 @@ import Footer from "@/components/layout/Footer.astro";
 import ContactAgent from "@/components/contact-agent/ContactAgent.astro";
 import { businessConfig as business } from "@/config/businessConfig";
 import "@/styles/global.css";
-interface Props { title: string; description: string; path?: string; schema?: Record<string, unknown> | Record<string, unknown>[]; }
-const { title, description, path = Astro.url.pathname, schema } = Astro.props;
+interface Props { title: string; description: string; path?: string; schema?: Record<string, unknown> | Record<string, unknown>[]; image?: string; }
+const { title, description, path = Astro.url.pathname, schema, image = "/og.jpg" } = Astro.props;
 const canonical = new URL(path, business.canonicalOrigin).toString();
+const ogImage = new URL(image, business.canonicalOrigin).toString();
 const baseSchema = [{
   "@context":"https://schema.org", "@type":["Organization","HomeAndConstructionBusiness"], name:business.name,
   url:business.canonicalOrigin, telephone:business.phoneHref, email:business.email,
@@ -20,8 +21,8 @@ const schemas = [...baseSchema, ...(Array.isArray(schema) ? schema : schema ? [s
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
     <title>{title}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" /><meta property="og:site_name" content={business.name} /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} />
+    <meta property="og:type" content="website" /><meta property="og:site_name" content={business.name} /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={ogImage} /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#061b2c" /><link rel="icon" href="/favicon.svg" />
     {schemas.map((item) => <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />)}
   </head>

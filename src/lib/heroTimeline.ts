@@ -14,34 +14,17 @@ export const heroStages = [
 
 export const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
 export const smoothstep = (value: number) => { const t = clamp01(value); return t * t * (3 - 2 * t); };
-const rise = (progress: number, start: number, end: number) => smoothstep((progress - start) / (end - start));
-const fall = (progress: number, start: number, end: number) => 1 - rise(progress, start, end);
-const envelope = (progress: number, inStart: number, inEnd: number, outStart: number, outEnd: number) => rise(progress, inStart, inEnd) * fall(progress, outStart, outEnd);
 
+// The house's visual state is rendered entirely by the united-hero engine
+// (public/uwd-hero/uh/united-hero.js), which owns its own scroll-driven
+// timeline. This module stays the single source of truth for the stage
+// copy: the engine's compact timeline labels and this file's fuller stage
+// text both read from heroStages, and this helper just reports which named
+// stage a given scroll progress falls in for any code that still wants it
+// (tests, the accessible-story list ordering).
 export function heroState(progress: number) {
   const p = clamp01(progress);
   const nextStage = heroStages.findIndex((stage) => p < stage.end);
   const stageIndex = nextStage < 0 ? heroStages.length - 1 : nextStage;
-  return {
-    progress: p,
-    stageIndex,
-    rain: fall(p, .04, .84),
-    storm: fall(p, .13, .87),
-    leaks: fall(p, .16, .30),
-    // Wetness and material moisture fall gradually across the whole drying
-    // arc (extraction through progressive drying), not just in the last stage,
-    // so the house visibly dries as the story progresses rather than snapping
-    // from "fully wet" to "fully dry" in the final few percent.
-    wet: fall(p, .38, .88),
-    moisture: envelope(p, .05, .14, .40, .93),
-    van: envelope(p, .16, .225, .91, .995),
-    inspection: envelope(p, .235, .27, .32, .40),
-    extraction: envelope(p, .33, .375, .42, .50),
-    airMovers: envelope(p, .425, .49, .91, .98),
-    airflow: envelope(p, .52, .575, .86, .95),
-    dehumidifier: envelope(p, .61, .67, .945, .995),
-    monitoring: envelope(p, .70, .735, .79, .86),
-    recovery: rise(p, .80, 1),
-    vanTravel: rise(p, .16, .225) * fall(p, .91, .995)
-  };
+  return { progress: p, stageIndex };
 }

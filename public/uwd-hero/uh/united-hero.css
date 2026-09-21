@@ -1,0 +1,182 @@
+/* UNITED Water Damage Restoration — hero animation
+   One locked master frame (1672×941). Every layer is positioned in % of that
+   frame, so the house never shifts between scenes or breakpoints. */
+
+.uh {
+  --uh-navy: #071a2f;
+  --uh-navy-2: #0c2744;
+  --uh-blue: #1389f5;
+  --uh-cyan: #4cc4ff;
+  --uh-ink: #eaf3fb;
+  --uh-mute: #8fa9c2;
+  --uh-focus-x: .5;            /* which part of the frame stays in view (0 left … 1 right) */
+  --uh-focus-y: .55;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--uh-navy);
+  color: var(--uh-ink);
+  font-family: inherit;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.uh-view {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  container-type: size;
+  background: #0b1624;
+}
+
+/* The stage always covers the viewport (like object-fit: cover) and keeps 1672:941. */
+.uh-stage {
+  --w: max(100cqw, calc(100cqh * 1672 / 941));
+  --h: calc(var(--w) * 941 / 1672);
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  left: calc((100cqw - var(--w)) * var(--uh-focus-x));
+  top: calc((100cqh - var(--h)) * var(--uh-focus-y));
+  font-size: calc(var(--w) / 167.2);  /* 1em = 10 frame px */
+  contain: layout paint;
+}
+.uh-stage > * { position: absolute; }
+.uh-base, .uh-fx, .uh-svg { inset: 0; width: 100%; height: 100%; display: block; }
+.uh-base { object-fit: fill; user-select: none; -webkit-user-drag: none; }
+.uh-dry, .uh-interior { opacity: 0; will-change: opacity; }
+.uh-fx, .uh-svg, .uh-flash, .uh-grade { pointer-events: none; }
+
+.uh-flash {
+  inset: 0;
+  background: radial-gradient(60% 55% at 38% 8%, rgba(200,225,255,.85), rgba(160,200,255,.18) 55%, transparent 75%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.uh-grade {   /* keeps headline side readable on top of the photo */
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5,16,30,.55), rgba(5,16,30,0) 38%),
+    linear-gradient(0deg, rgba(5,16,30,.55), rgba(5,16,30,0) 22%);
+}
+
+/* Props: left/bottom anchor = where the object touches the floor, in frame px → % */
+.uh-prop {
+  left: calc(var(--x) / 1672 * 100%);
+  top: calc(var(--y) / 941 * 100%);
+  width: calc(var(--pw) / 1672 * 100%);
+  transform: translate(-50%, -100%);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.uh-prop img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+.uh-prop::after {               /* contact shadow */
+  content: ""; position: absolute; left: 6%; right: 6%; bottom: -4%; height: 12%;
+  background: radial-gradient(closest-side, rgba(0,0,0,.55), transparent);
+  z-index: -1; filter: blur(.2em);
+}
+.uh-in img  { filter: brightness(.92) saturate(.92) sepia(.10) contrast(1.04); }
+.uh-flip img { transform: scaleX(-1); }
+
+.uh-van { --pw: 520; transform: translate(0, -100%) rotate(3.2deg); transform-origin: 50% 100%; }
+.uh-van img { filter: brightness(var(--van-b, .7)) saturate(.9) contrast(1.06); }
+.uh-van::after { left: 3%; right: 3%; height: 16%; bottom: -5%; }
+.uh-beam {
+  position: absolute; left: 93%; top: 38%; width: 75%; height: 60%;
+  background: radial-gradient(ellipse at 0% 45%, rgba(255,238,190,.75), rgba(255,226,160,.18) 40%, transparent 70%);
+  clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 56%);
+  mix-blend-mode: screen; opacity: var(--beam, 0); filter: blur(.3em);
+}
+
+/* Moisture readout tags */
+.uh-tag {
+  left: calc(var(--x) / 1672 * 100%);
+  top: calc(var(--y) / 941 * 100%);
+  transform: translate(-50%, -50%);
+  padding: .35em .6em .4em;
+  font-size: 1.15em; line-height: 1; font-weight: 600; letter-spacing: .01em;
+  font-variant-numeric: tabular-nums;
+  color: #fff; white-space: nowrap;
+  background: rgba(6,22,40,.82);
+  border: 1px solid rgba(76,196,255,.6);
+  border-radius: .45em;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+}
+.uh-tag small { display: block; margin-top: .3em; font-size: .72em; font-weight: 500; color: var(--uh-mute); }
+.uh-tag[data-state="wet"]  { border-color: #ff8a3c; }
+.uh-tag[data-state="dry"]  { border-color: #44d9a0; }
+.uh-tag[data-state="dry"] small { color: #7be8bf; }
+
+/* ───────── timeline ───────── */
+.uh-bar {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  padding: 14px clamp(14px, 2.6vw, 40px) 16px;
+  background: linear-gradient(180deg, #0a2038, var(--uh-navy));
+  border-top: 1px solid rgba(76,196,255,.16);
+}
+.uh-play {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--uh-ink); background: transparent;
+  border: 1.5px solid rgba(143,169,194,.55);
+  cursor: pointer; padding: 0;
+}
+.uh-play:hover { border-color: var(--uh-cyan); color: var(--uh-cyan); }
+.uh-play svg { width: 16px; height: 16px; fill: currentColor; }
+.uh :focus-visible { outline: 2px solid var(--uh-cyan); outline-offset: 3px; }
+
+.uh-track { position: relative; min-width: 0; }
+.uh-rail, .uh-fill { position: absolute; top: 7px; height: 2px; border-radius: 2px; }
+.uh-rail { left: calc(100% / 22); right: calc(100% / 22); background: rgba(143,169,194,.28); }
+.uh-fill { left: calc(100% / 22); width: calc((100% - 100% / 11) * var(--p, 0)); background: linear-gradient(90deg, var(--uh-blue), var(--uh-cyan)); }
+.uh-steps { position: relative; display: grid; grid-template-columns: repeat(11, 1fr); margin: 0; padding: 0; list-style: none; }
+.uh-step {
+  all: unset; box-sizing: border-box; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  width: 100%; padding: 2px 2px 0; text-align: center;
+  color: var(--uh-mute);
+}
+.uh-step i {
+  width: 9px; height: 9px; margin: 3px 0; border-radius: 50%;
+  background: var(--uh-navy); border: 1.5px solid rgba(143,169,194,.7);
+  transition: transform .25s, background .25s, border-color .25s;
+}
+.uh-step b { font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--uh-ink); opacity: .75; }
+.uh-step span { font-size: 11px; line-height: 1.25; max-width: 11ch; }
+.uh-step[data-done] i { background: var(--uh-blue); border-color: var(--uh-blue); }
+.uh-step[aria-current="step"] i { background: #fff; border-color: var(--uh-cyan); transform: scale(1.55); box-shadow: 0 0 0 4px rgba(76,196,255,.22); }
+.uh-step[aria-current="step"], .uh-step:hover { color: var(--uh-ink); }
+.uh-step[aria-current="step"] b { opacity: 1; color: var(--uh-cyan); }
+
+.uh-now { display: none; }
+
+/* Your own headline / CTA markup placed inside the root element lands here */
+.uh-overlay { position: absolute; inset: 0; pointer-events: none; }
+.uh-overlay > * { pointer-events: auto; }
+
+/* Tablet: numbers only under the dots, current scene named on one line */
+@media (max-width: 1100px) {
+  .uh-step span { display: none; }
+  .uh-bar { grid-template-columns: auto 1fr; row-gap: 8px; }
+  .uh-now { margin: 0; display: block; grid-column: 1 / -1; font-size: 14px; color: var(--uh-mute); min-height: 2.6em; }
+  .uh-now strong { color: var(--uh-ink); font-weight: 600; margin-right: .5em; }
+}
+/* Phone: focus the crop on the cutaway so every story zone stays visible */
+@media (max-width: 700px) {
+  .uh { --uh-focus-x: .78; --uh-focus-y: .5; }
+  .uh-step b { display: none; }
+  .uh-step { padding: 8px 0; }
+  .uh-rail, .uh-fill { top: 15px; }
+  .uh-grade { background: linear-gradient(0deg, rgba(5,16,30,.5), rgba(5,16,30,0) 25%); }
+  .uh-tag { font-size: 1.6em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uh-step i { transition: none; }
+}

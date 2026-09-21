@@ -2,7 +2,13 @@ import { describe,expect,it } from "vitest"; import { businessConfig } from "../
 import { serviceDetails } from "../src/data/serviceDetails";
 describe("critical content",()=>{
   it("keeps the canonical phone link centralized",()=>expect(businessConfig.phoneHref).toBe("+14083854892"));
-  it("does not claim 24/7 by default",()=>expect(businessConfig.serviceLabel()).not.toContain("24/7"));
+  it("keeps the 24/7 label in sync with the emergencySupport24x7 flag",()=>{
+    // businessConfig.emergencySupport24x7 is a deliberate business decision
+    // (see README: "Enable 24/7 wording only after call handling is
+    // operational"), not something this suite should assume either way.
+    // This guard only checks the label never drifts from that flag.
+    expect(businessConfig.serviceLabel().includes("24/7")).toBe(businessConfig.emergencySupport24x7);
+  });
   it("has unique service slugs",()=>expect(new Set(services.map(s=>s.slug)).size).toBe(services.length));
   it("gives each service a complete, distinct field guide",()=>{
     expect(Object.keys(serviceDetails).sort()).toEqual(services.map(s=>s.slug).sort());

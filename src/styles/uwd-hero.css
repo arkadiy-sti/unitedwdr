@@ -60,3 +60,10 @@ body:has(.uwd-hero-story) .site-header:not(.is-scrolled){background:linear-gradi
 @media(prefers-reduced-motion:reduce){
   .uwd-story-caption .uwd-stage-cta{display:none}
 }
+
+/* The sitewide sticky "Call now" bar sits above everything (z-index:90) and
+   is always visible on phones, which permanently hid the engine's own
+   bottom timeline/caption for the whole time this section was on screen.
+   Hide it only while the hero is in view (see UwdHeroStory.astro); the
+   hero's own intro panel already has an equivalent Call now action. */
+@media(max-width:640px){body.uwd-hero-in-view .mobile-call{display:none}}

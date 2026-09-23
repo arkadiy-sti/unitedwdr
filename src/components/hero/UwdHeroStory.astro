@@ -45,4 +45,16 @@ import "@/styles/uwd-hero.css";
     if (title) title.textContent = stage.title;
     if (detail) detail.textContent = stage.detail;
   });
+
+  // The site's sitewide sticky "Call now" bar (mobile only) sits at a higher
+  // z-index than anything in the hero, so for the whole time this section is
+  // on screen it was permanently covering the engine's own bottom timeline
+  // and stage caption on phones. Hide that bar only while the hero is in
+  // view, then let it come back for the rest of the page.
+  if (story && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      document.body.classList.toggle("uwd-hero-in-view", entry?.isIntersecting ?? false);
+    });
+    observer.observe(story);
+  }
 </script>
